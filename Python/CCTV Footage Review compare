@@ -1,0 +1,39 @@
+import cv2 
+import numpy as np 
+from imutils.video import FileVideoStream 
+import imutils 
+from matplotlib import pyplot as plt
+import time 
+import sys
+cap = cv2.VideoCapture( r"G:\CCTV_Reviewer_Project\CCTV Footage of Bike Theft-Yamaha Fz 150 Fi Version 2..mp4") 
+def tempCapture(cap): 
+    cap.set(1, 1) 
+    ret, temp = cap.read() 
+    temp_gray = cv2.cvtColor(temp, cv2.COLOR_BGR2GRAY) 
+    hist_temp = cv2.calcHist([temp_gray], [0], None,[ 256], [0,256],accumulate=False) 
+    hist_temp = cv2.normalize(hist_temp, hist_temp,alpha=0, beta=1, norm_type=cv2.NORM_MINMAX) 
+    cap.release() 
+    return temp_gray, hist_temp 
+template, hist = tempCapture(cap) 
+print("temp hist",hist) 
+vs = FileVideoStream(r"G:\CCTV_Reviewer_Project\CCTV Footage of Bike Theft-Yamaha Fz 150 Fi Version 2..mp4").start() 
+time.sleep(2.0) 
+while vs.more(): 
+    img = vs.read() 
+    gray_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY) 
+    hist_img = cv2.calcHist([gray_img], [0], None, [256], [0,256],accumulate=False) 
+    hist_img = cv2.normalize(hist_img, hist_img,alpha=0, beta=1, norm_type=cv2.NORM_MINMAX)    
+    d = cv2.compareHist(hist,hist_img, cv2.HISTCMP_CORREL) 
+    diff = np.array(d)
+    print(round(diff.tolist(),3))
+    np.savetxt("diff.csv", (hist,diff), fmt="%s", delimiter=",")
+    #cv2.imshow("rr",img) 
+    plt.hist(d)
+    plt.xscale('log')
+    plt.title('Histogram of log values')
+    if cv2.waitKey(1) & 0xFF == ord("q"): 
+        break 
+    cv2.destroyAllWindows() 
+    plt.savefig('diff_val.png')
+    vs.stop()
+    
