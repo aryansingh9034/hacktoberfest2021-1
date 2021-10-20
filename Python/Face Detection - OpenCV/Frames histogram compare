@@ -1,0 +1,76 @@
+import cv2
+from matplotlib import pyplot as plt
+vidcap = cv2.VideoCapture('/home/neha/All_Projects/CCTV_Reviewer_Project/CCTV Footage of Bike Theft-Yamaha Fz 150 Fi Version 2..mp4')
+def getFrame(sec):
+    vidcap.set(cv2.CAP_PROP_POS_MSEC,sec*1000)
+    hasFrames,image = vidcap.read()
+    if hasFrames:
+        cv2.imwrite("image"+str(count)+".jpg", image)    
+    return hasFrames
+    
+
+sec = 0
+frameRate = 60.4
+count=1
+success = getFrame(sec)
+while success:
+    count = count + 1
+    sec = sec + frameRate
+    sec = round(sec, 2)
+    success = getFrame(sec)
+
+
+img1 = cv2.imread('image1.jpg')
+
+
+for i, col in enumerate(['b', 'g', 'r']):
+    hist = cv2.calcHist([img1], [i], None, [256], [0, 256])
+    plt.plot(hist, color = col)
+    plt.xlim([0, 256])
+plt.savefig('image1.png')
+plt.show()
+
+img2 = cv2.imread('image2.jpg')
+
+for i, col in enumerate(['b', 'g', 'r']):
+    hist = cv2.calcHist([img2], [i], None, [256], [0, 256])
+    plt.plot(hist, color = col)
+    plt.xlim([0, 256])
+plt.savefig('image2.png')
+plt.show()
+
+img3 = cv2.imread('image3.jpg')
+
+for i, col in enumerate(['b', 'g', 'r']):
+    hist = cv2.calcHist([img3], [i], None, [256], [0, 256])
+    plt.plot(hist, color = col)
+    plt.xlim([0, 256])
+plt.savefig('image3.png')
+plt.show()
+
+img4 = cv2.imread('image4.jpg')
+
+for i, col in enumerate(['b', 'g', 'r']):
+    hist = cv2.calcHist([img4], [i], None, [256], [0, 256])
+    plt.plot(hist, color = col)
+    plt.xlim([0, 256])
+plt.savefig('image4.png')
+plt.show()
+
+img5 = cv2.imread('image5.jpg')
+
+for i, col in enumerate(['b', 'g', 'r']):
+    hist = cv2.calcHist([img5], [i], None, [256], [0, 256])
+    plt.plot(hist, color = col)
+    plt.xlim([0, 256])
+plt.savefig('image5.png')
+plt.show()
+
+img6 = cv2.imread('image6.jpg')
+
+for i, col in enumerate(['b', 'g', 'r']):
+    hist = cv2.calcHist([img6], [i], None, [256], [0, 256])
+    plt.plot(hist, color = col)
+    plt.xlim([0, 256])
+plt.savefig('image6.png')
+plt.show()
